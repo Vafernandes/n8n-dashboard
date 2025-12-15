@@ -30,7 +30,7 @@ const SubscriptionPanel = ({ subscription, onBack }: SubscriptionPanelProps) => 
             <p className="text-lg font-semibold">{subscription.status}</p>
             <p className="text-sm text-muted">Plano {subscription.plan}</p>
           </div>
-          <span className="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/40 text-xs font-semibold status-paid">
+          <span className="px-3 py-1 rounded-full text-xs font-semibold status-paid">
             {subscription.status}
           </span>
         </div>
@@ -66,7 +66,7 @@ const SubscriptionPanel = ({ subscription, onBack }: SubscriptionPanelProps) => 
               <div key={invoice.id} className="rounded-xl bg-white/5 px-4 py-3 border border-white/10 text-sm space-y-1">
                 <p className="font-semibold">{invoice.date}</p>
                 <p className="text-muted">{invoice.amount}</p>
-                <span className="text-xs px-2 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/40 status-paid">
+                <span className="text-xs px-2 py-1 rounded-full status-paid">
                   {invoice.status}
                 </span>
               </div>

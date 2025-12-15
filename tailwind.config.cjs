@@ -4,10 +4,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        surface: '#0f1115',
-        panel: '#161920',
-        accent: '#4f8bff',
-        muted: '#8b95a5'
+        surface: '#1C1C1C',
+        panel: '#2A2A2A',
+        accent: '#FF8A8A',
+        danger: '#FF8A8A',
+        highlight: '#B3B6B8',
+        steel: '#8E9194',
+        graphite: '#4B4E52',
+        muted: '#9A9DA1',
+        neutral: '#7A7D80'
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif']

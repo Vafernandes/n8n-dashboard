@@ -270,13 +270,13 @@ function App() {
                       placeholder="000000"
                     />
                   </label>
-                  <button
-                    type="button"
-                    onClick={() => setIsAuthenticated(true)}
-                    className="w-full rounded-xl bg-accent text-white font-semibold py-3 hover:opacity-90 transition-opacity"
-                  >
-                    Entrar
-                  </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAuthenticated(true)}
+                  className="w-full rounded-xl bg-[#FF8A8A] text-[#1C1C1C] font-semibold py-3 hover:bg-[#ff9fa0] transition-colors"
+                >
+                  Entrar
+                </button>
                   <p className="text-xs text-muted text-center">
                     Mock: o botão Entrar desbloqueia a interface principal. Integre com seu fluxo real de OTP ou SSO.
                   </p>
@@ -341,13 +341,13 @@ function App() {
                       </label>
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => setIsAuthenticated(true)}
-                    className="w-full rounded-xl bg-accent text-white font-semibold py-3 hover:opacity-90 transition-opacity"
-                  >
-                    Criar conta e assinar
-                  </button>
+                <button
+                  type="button"
+                  onClick={() => setIsAuthenticated(true)}
+                  className="w-full rounded-xl bg-[#FF8A8A] text-[#1C1C1C] font-semibold py-3 hover:bg-[#ff9fa0] transition-colors"
+                >
+                  Criar conta e assinar
+                </button>
                   <p className="text-xs text-muted text-center">
                     Mock: o botão ativa a assinatura e libera o painel. Integre com seu gateway de pagamento/checkout real.
                   </p>

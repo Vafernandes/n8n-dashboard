@@ -7,17 +7,18 @@
 }
 
 body {
-  background: radial-gradient(circle at 20% 20%, rgba(79, 139, 255, 0.08), transparent 25%),
-    radial-gradient(circle at 80% 0%, rgba(255, 99, 247, 0.08), transparent 20%),
-    #0f1115;
+  background: radial-gradient(circle at 22% 22%, rgba(179, 182, 184, 0.12), transparent 30%),
+    radial-gradient(circle at 78% 12%, rgba(142, 145, 148, 0.14), transparent 24%),
+    #1c1c1c;
+  color: #f6f7fb;
 }
 
 body.theme-light {
   color-scheme: light;
-  background: radial-gradient(circle at 20% 20%, rgba(79, 139, 255, 0.12), transparent 26%),
-    radial-gradient(circle at 80% 0%, rgba(255, 99, 247, 0.12), transparent 24%),
-    #f6f7fb;
-  color: #0b1220;
+  background: radial-gradient(circle at 22% 24%, rgba(179, 182, 184, 0.16), transparent 28%),
+    radial-gradient(circle at 82% 6%, rgba(142, 145, 148, 0.16), transparent 22%),
+    #f5f6f7;
+  color: #1c1c1c;
 }
 
 .glass-panel {
@@ -25,9 +26,9 @@ body.theme-light {
 }
 
 body.theme-light .glass-panel {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(15, 17, 21, 0.08);
-  box-shadow: 0 10px 35px rgba(15, 17, 21, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(74, 78, 82, 0.12);
+  box-shadow: 0 10px 35px rgba(28, 28, 28, 0.08);
 }
 
 .section-title {
@@ -36,11 +37,11 @@ body.theme-light .glass-panel {
 
 /* Light theme overrides for text and utility colors */
 body.theme-light .text-white {
-  color: #0b1220 !important;
+  color: #1c1c1c !important;
 }
 
 body.theme-light .text-muted {
-  color: #4b5565 !important;
+  color: #4b4e52 !important;
 }
 
 body.theme-light .bg-panel {
@@ -48,47 +49,51 @@ body.theme-light .bg-panel {
 }
 
 body.theme-light .bg-white\/5 {
-  background-color: rgba(15, 17, 21, 0.04) !important;
+  background-color: rgba(28, 28, 28, 0.04) !important;
 }
 
 body.theme-light .border-white\/5 {
-  border-color: rgba(15, 17, 21, 0.08) !important;
+  border-color: rgba(28, 28, 28, 0.08) !important;
 }
 
 body.theme-light .border-white\/10 {
-  border-color: rgba(15, 17, 21, 0.12) !important;
+  border-color: rgba(28, 28, 28, 0.12) !important;
 }
 
 body.theme-light .hover\:bg-white\/5:hover {
-  background-color: rgba(15, 17, 21, 0.06) !important;
+  background-color: rgba(28, 28, 28, 0.06) !important;
 }
 
 .status-paid {
-  color: #065f46;
+  background: rgba(179, 182, 184, 0.2);
+  border: 1px solid rgba(142, 145, 148, 0.5);
+  color: #1c1c1c;
 }
 
 body.theme-dark .status-paid {
-  color: #d1fae5;
+  background: rgba(142, 145, 148, 0.16);
+  border: 1px solid rgba(179, 182, 184, 0.5);
+  color: #f6f7fb;
 }
 
 .btn-cancel {
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #fca5a5;
+  background: rgba(255, 138, 138, 0.16);
+  border: 1px solid rgba(255, 138, 138, 0.48);
+  color: #ffe6e6;
 }
 
 .btn-cancel:hover {
-  border-color: rgba(239, 68, 68, 0.6);
+  border-color: rgba(255, 138, 138, 0.65);
 }
 
 body.theme-light .btn-cancel {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #991b1b;
+  background: rgba(255, 138, 138, 0.12);
+  border: 1px solid rgba(255, 138, 138, 0.32);
+  color: #4d1a1a;
 }
 
 body.theme-light .btn-cancel:hover {
-  border-color: rgba(239, 68, 68, 0.4);
+  border-color: rgba(255, 138, 138, 0.5);
 }
 
 .section-title {
