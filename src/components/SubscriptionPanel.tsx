@@ -87,7 +87,18 @@ const SubscriptionPanel = ({ subscription, onBack }: SubscriptionPanelProps) => 
           >
             Alterar plano
           </button>
+          <button
+            type="button"
+            className="rounded-xl px-4 py-3 text-sm text-left transition-colors btn-cancel"
+          >
+            Cancelar plano
+          </button>
         </div>
+
+        <p className="text-xs text-muted">
+          Mock: o botão de cancelamento não executa ação real. Conecte ao endpoint de cancelamento da sua billing (ex.: Stripe/Braintree)
+          e ajuste a confirmação/feedback conforme o fluxo.
+        </p>
       </div>
     </section>
   );

@@ -71,6 +71,26 @@ body.theme-dark .status-paid {
   color: #d1fae5;
 }
 
+.btn-cancel {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.btn-cancel:hover {
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+body.theme-light .btn-cancel {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #991b1b;
+}
+
+body.theme-light .btn-cancel:hover {
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
 .section-title {
   @apply text-sm font-medium uppercase tracking-[0.18em] text-muted/70;
 }
