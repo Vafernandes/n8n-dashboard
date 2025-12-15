@@ -12,6 +12,10 @@ body {
     #0f1115;
 }
 
+.text-muted {
+  color: #8b95a5;
+}
+
 .glass-panel {
   @apply bg-panel/80 backdrop-blur-xl border border-white/5 shadow-glow shadow-soft;
 }
