@@ -93,6 +93,11 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
   const [accessCode, setAccessCode] = useState('');
+  const [password, setPassword] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardExp, setCardExp] = useState('');
+  const [cardCvv, setCardCvv] = useState('');
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [query, setQuery] = useState('');
   const [libraryType, setLibraryType] = useState<'Todas' | 'Link' | 'Lembrete' | 'Anotação' | 'Mercado'>('Todas');
@@ -179,42 +184,132 @@ function App() {
             </div>
 
             <div className="glass-panel rounded-2xl p-6 sm:p-8 space-y-6 border border-white/10">
-              <div className="space-y-2">
-                <p className="text-lg font-semibold">Login seguro</p>
-                <p className="text-sm text-muted">Use seu e-mail para receber um código temporário.</p>
-              </div>
-              <div className="space-y-4">
-                <label className="space-y-2 block">
-                  <span className="text-sm text-muted">E-mail</span>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm focus:outline-none focus:border-accent"
-                    placeholder="voce@exemplo.com"
-                  />
-                </label>
-                <label className="space-y-2 block">
-                  <span className="text-sm text-muted">Código de acesso</span>
-                  <input
-                    type="text"
-                    value={accessCode}
-                    onChange={(e) => setAccessCode(e.target.value)}
-                    className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm tracking-[0.2em] uppercase focus:outline-none focus:border-accent"
-                    placeholder="000000"
-                  />
-                </label>
+              <div className="flex items-center gap-2 text-sm">
                 <button
                   type="button"
-                  onClick={() => setIsAuthenticated(true)}
-                  className="w-full rounded-xl bg-accent text-white font-semibold py-3 hover:opacity-90 transition-opacity"
+                  className={`px-3 py-2 rounded-lg transition-colors ${authMode === 'login' ? 'bg-accent text-white' : 'bg-white/5 border border-white/10 text-muted'}`}
+                  onClick={() => setAuthMode('login')}
                 >
                   Entrar
                 </button>
-                <p className="text-xs text-muted text-center">
-                  Mock: o botão Entrar desbloqueia a interface principal. Integre com seu fluxo real de OTP ou SSO.
-                </p>
+                <button
+                  type="button"
+                  className={`px-3 py-2 rounded-lg transition-colors ${authMode === 'signup' ? 'bg-accent text-white' : 'bg-white/5 border border-white/10 text-muted'}`}
+                  onClick={() => setAuthMode('signup')}
+                >
+                  Criar conta
+                </button>
               </div>
+
+              {authMode === 'login' ? (
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <p className="text-lg font-semibold">Login seguro</p>
+                    <p className="text-sm text-muted">Use seu e-mail para receber um código temporário.</p>
+                  </div>
+                  <label className="space-y-2 block">
+                    <span className="text-sm text-muted">E-mail</span>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm focus:outline-none focus:border-accent"
+                      placeholder="voce@exemplo.com"
+                    />
+                  </label>
+                  <label className="space-y-2 block">
+                    <span className="text-sm text-muted">Código de acesso</span>
+                    <input
+                      type="text"
+                      value={accessCode}
+                      onChange={(e) => setAccessCode(e.target.value)}
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm tracking-[0.2em] uppercase focus:outline-none focus:border-accent"
+                      placeholder="000000"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setIsAuthenticated(true)}
+                    className="w-full rounded-xl bg-accent text-white font-semibold py-3 hover:opacity-90 transition-opacity"
+                  >
+                    Entrar
+                  </button>
+                  <p className="text-xs text-muted text-center">
+                    Mock: o botão Entrar desbloqueia a interface principal. Integre com seu fluxo real de OTP ou SSO.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <p className="text-lg font-semibold">Criar conta e assinar</p>
+                    <p className="text-sm text-muted">Preencha seus dados e cartão para ativar a assinatura.</p>
+                  </div>
+                  <label className="space-y-2 block">
+                    <span className="text-sm text-muted">E-mail</span>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm focus:outline-none focus:border-accent"
+                      placeholder="voce@exemplo.com"
+                    />
+                  </label>
+                  <label className="space-y-2 block">
+                    <span className="text-sm text-muted">Senha</span>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm focus:outline-none focus:border-accent"
+                      placeholder="mín. 8 caracteres"
+                    />
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label className="space-y-2 block">
+                      <span className="text-sm text-muted">Número do cartão</span>
+                      <input
+                        type="text"
+                        value={cardNumber}
+                        onChange={(e) => setCardNumber(e.target.value)}
+                        className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm focus:outline-none focus:border-accent"
+                        placeholder="0000 0000 0000 0000"
+                      />
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <label className="space-y-2 block">
+                        <span className="text-sm text-muted">Validade</span>
+                        <input
+                          type="text"
+                          value={cardExp}
+                          onChange={(e) => setCardExp(e.target.value)}
+                          className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-3 text-sm focus:outline-none focus:border-accent"
+                          placeholder="MM/AA"
+                        />
+                      </label>
+                      <label className="space-y-2 block">
+                        <span className="text-sm text-muted">CVV</span>
+                        <input
+                          type="text"
+                          value={cardCvv}
+                          onChange={(e) => setCardCvv(e.target.value)}
+                          className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-3 text-sm focus:outline-none focus:border-accent"
+                          placeholder="123"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsAuthenticated(true)}
+                    className="w-full rounded-xl bg-accent text-white font-semibold py-3 hover:opacity-90 transition-opacity"
+                  >
+                    Criar conta e assinar
+                  </button>
+                  <p className="text-xs text-muted text-center">
+                    Mock: o botão ativa a assinatura e libera o painel. Integre com seu gateway de pagamento/checkout real.
+                  </p>
+                </div>
+              )}
             </div>
           </section>
         ) : (
