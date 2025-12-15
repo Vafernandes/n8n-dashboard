@@ -1,80 +1,153 @@
-import { BookmarkSquareIcon, CalendarDaysIcon, LinkIcon, MegaphoneIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
-import SearchBar from './components/SearchBar';
+import { useMemo, useState } from 'react';
+import {
+  BookmarkSquareIcon,
+  CalendarDaysIcon,
+  LinkIcon,
+  MegaphoneIcon,
+  ShoppingBagIcon,
+  Squares2X2Icon,
+} from '@heroicons/react/24/outline';
 import CategoryCard from './components/CategoryCard';
-import RecentItem, { RecentItemType } from './components/RecentItem';
+import SearchBar from './components/SearchBar';
+import TagChip from './components/TagChip';
+import LibraryItem from './components/LibraryItem';
 
-const categories = [
-  { label: 'Links', count: 18, icon: <LinkIcon className="w-6 h-6" aria-hidden /> },
-  { label: 'Lembretes', count: 6, icon: <MegaphoneIcon className="w-6 h-6" aria-hidden /> },
-  { label: 'Anotações', count: 12, icon: <BookmarkSquareIcon className="w-6 h-6" aria-hidden /> },
-  { label: 'Mercado', count: 9, icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden /> },
-  { label: 'Eventos', count: 4, icon: <CalendarDaysIcon className="w-6 h-6" aria-hidden /> },
-];
-
-const recentItems: RecentItemType[] = [
+const libraryItems = [
   {
-    id: '1',
-    type: 'Link',
-    summary: 'Resumo de UX heurísticas para revisar antes da reunião',
-    tags: ['trabalho', 'ux', 'prioridade'],
-    context: 'Educacional',
-    date: 'há 12 minutos',
+    id: 'lib-1',
+    type: 'Link' as const,
+    title: 'Artigo: “IA no atendimento — casos reais”',
+    preview: 'Resumo do artigo com exemplos de automações em SAC e follow-up pro time de CX.',
+    tags: ['link', 'ia', 'cx'],
+    addedAt: 'há 8 min',
   },
   {
-    id: '2',
-    type: 'Mercado',
-    summary: 'Lista rápida: café especial, aveia, frutas vermelhas',
-    tags: ['pessoal', 'urgente'],
-    context: 'Compra',
-    date: 'há 1 hora',
+    id: 'lib-2',
+    type: 'Link' as const,
+    title: 'Roteiro Lisboa → Porto (Notion)',
+    preview: 'Mapa com cafés, coworkings e trilhas de fim de semana para a viagem.',
+    tags: ['viagem', 'mapa', 'link'],
+    addedAt: 'há 22 min',
   },
   {
-    id: '3',
-    type: 'Evento',
-    summary: 'Workshop remoto de IA aplicada — quinta, 19h',
-    tags: ['estudo', 'online'],
-    context: 'Evento',
-    date: 'há 3 horas',
+    id: 'lib-3',
+    type: 'Link' as const,
+    title: 'Template de UX heurísticas',
+    preview: 'Checklist com 10 heurísticas e seção de insights para revisões rápidas.',
+    tags: ['ux', 'checklist'],
+    addedAt: 'há 1 hora',
   },
   {
-    id: '4',
-    type: 'Lembrete',
-    summary: 'Enviar comprovante do pagamento do coworking',
-    tags: ['financeiro'],
-    context: 'Financeiro',
-    date: 'ontem',
+    id: 'lib-4',
+    type: 'Link' as const,
+    title: 'Planilha de controle financeiro',
+    preview: 'Organização de pagamentos mensais + lembrete de reajuste do coworking.',
+    tags: ['financeiro', 'link'],
+    addedAt: 'ontem',
   },
   {
-    id: '5',
-    type: 'Anotação',
-    summary: 'Ideias para roteiro de viagem — Lisboa e Porto',
-    tags: ['viagem', 'inspiração', 'lazer'],
-    context: 'Lazer',
-    date: '2 dias atrás',
+    id: 'lib-5',
+    type: 'Link' as const,
+    title: 'Curadoria de podcasts sobre IA',
+    preview: '3 episódios marcados para ouvir no fim de semana.',
+    tags: ['podcast', 'ia'],
+    addedAt: '2 dias atrás',
+  },
+  {
+    id: 'lib-6',
+    type: 'Lembrete' as const,
+    title: 'Renovar filtro de água',
+    preview: 'Comprar refil junto com a lista de mercado desta semana.',
+    tags: ['lembrete', 'casa'],
+    addedAt: 'há 3 horas',
+  },
+  {
+    id: 'lib-7',
+    type: 'Lembrete' as const,
+    title: 'Enviar comprovante do coworking',
+    preview: 'Confirmar pagamento e mandar recibo para o administrativo.',
+    tags: ['financeiro', 'urgente'],
+    addedAt: 'ontem',
+  },
+  {
+    id: 'lib-8',
+    type: 'Anotação' as const,
+    title: 'Checklist de reunião de quarta',
+    preview: 'Q4 pipeline, bugs críticos, owners do lançamento mobile.',
+    tags: ['reunião', 'prioridade'],
+    addedAt: 'há 30 min',
+  },
+  {
+    id: 'lib-9',
+    type: 'Mercado' as const,
+    title: 'Lista rápida: café, aveia, frutas vermelhas',
+    preview: 'Adicionar filtro de água e granola se tiver promoção.',
+    tags: ['mercado', 'compras'],
+    addedAt: 'há 2 horas',
   },
 ];
 
 function App() {
+  const [query, setQuery] = useState('');
+  const [libraryType, setLibraryType] = useState<'Todas' | 'Link' | 'Lembrete' | 'Anotação' | 'Mercado'>('Todas');
+
+  const libraryCounts = useMemo(
+    () =>
+      libraryItems.reduce(
+        (acc, item) => {
+          acc[item.type] = (acc[item.type] || 0) + 1;
+          acc.total += 1;
+          return acc;
+        },
+        { total: 0 } as Record<string, number>
+      ),
+    []
+  );
+
+  const filteredLibrary = useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+
+    return libraryItems.filter((item) => {
+      const matchesType = libraryType === 'Todas' || item.type === libraryType;
+      const matchesQuery =
+        !normalized ||
+        item.title.toLowerCase().includes(normalized) ||
+        item.preview.toLowerCase().includes(normalized) ||
+        item.tags.some((tag) => tag.toLowerCase().includes(normalized));
+
+      return matchesType && matchesQuery;
+    });
+  }, [libraryType, query]);
+
+  const categories = [
+    { label: 'Total', count: libraryCounts.total, icon: <Squares2X2Icon className="w-6 h-6" aria-hidden /> },
+    { label: 'Links', count: libraryCounts.Link ?? 0, icon: <LinkIcon className="w-6 h-6" aria-hidden /> },
+    { label: 'Lembretes', count: libraryCounts.Lembrete ?? 0, icon: <MegaphoneIcon className="w-6 h-6" aria-hidden /> },
+    { label: 'Anotações', count: libraryCounts['Anotação'] ?? 0, icon: <BookmarkSquareIcon className="w-6 h-6" aria-hidden /> },
+    { label: 'Mercado', count: libraryCounts.Mercado ?? 0, icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden /> },
+    { label: 'Eventos', count: 0, icon: <CalendarDaysIcon className="w-6 h-6" aria-hidden /> },
+  ];
+
   return (
     <main className="min-h-screen text-white px-4 sm:px-8 pb-16">
       <div className="max-w-6xl mx-auto pt-10 sm:pt-16 flex flex-col gap-10 sm:gap-14">
         <header className="text-center space-y-3">
           <p className="section-title">Personal WhatsApp Agent</p>
           <h1 className="text-3xl sm:text-4xl font-semibold leading-tight">
-            Continue onde parou, com um layout inspirado na nova aba do Chrome.
+            Continue de onde parou: um hub que categoriza tudo que chega pelo WhatsApp.
           </h1>
           <p className="text-muted max-w-2xl mx-auto">
-            Tudo o que você enviou pelo WhatsApp fica organizado aqui por contexto, para navegação
-            instantânea e sem atrito visual.
+            Mensagens, links, lembretes, imagens e áudios são classificados pelo agente em segundos.
+            Visualize, filtre e retome qualquer coisa sem precisar lembrar da conversa original.
           </p>
         </header>
 
-        <SearchBar />
+        <SearchBar value={query} onChange={setQuery} placeholder="Buscar por título, tag ou trecho salvo" />
 
         <section className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="section-title">Categorias</p>
-            <span className="text-muted text-sm">Contadores fictícios para percepção rápida</span>
+            <p className="section-title">Categorias e contagem</p>
+            <span className="text-muted text-sm">Visão rápida dos itens já classificados</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
             {categories.map((category) => (
@@ -85,13 +158,45 @@ function App() {
 
         <section className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="section-title">Continuar de onde parei</p>
-            <span className="text-muted text-sm">Itinerário visual com contexto e tags</span>
+            <p className="section-title">Coleção</p>
+            <span className="text-muted text-sm">Tudo que já foi classificado pelo agente</span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-            {recentItems.map((item) => (
-              <RecentItem key={item.id} {...item} />
-            ))}
+          <div className="glass-panel rounded-2xl p-4 sm:p-5 space-y-4">
+            <div className="flex flex-wrap gap-2 sm:gap-3 items-center">
+              <TagChip
+                label={`Todas (${libraryCounts.total})`}
+                active={libraryType === 'Todas'}
+                onClick={() => setLibraryType('Todas')}
+              />
+              <TagChip
+                label={`Links (${libraryCounts.Link ?? 0})`}
+                active={libraryType === 'Link'}
+                onClick={() => setLibraryType('Link')}
+              />
+              <TagChip
+                label={`Lembretes (${libraryCounts.Lembrete ?? 0})`}
+                active={libraryType === 'Lembrete'}
+                onClick={() => setLibraryType('Lembrete')}
+              />
+              <TagChip
+                label={`Anotações (${libraryCounts['Anotação'] ?? 0})`}
+                active={libraryType === 'Anotação'}
+                onClick={() => setLibraryType('Anotação')}
+              />
+              <TagChip
+                label={`Mercado (${libraryCounts.Mercado ?? 0})`}
+                active={libraryType === 'Mercado'}
+                onClick={() => setLibraryType('Mercado')}
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+              {filteredLibrary.map((item) => (
+                <LibraryItem key={item.id} {...item} />
+              ))}
+              {filteredLibrary.length === 0 && (
+                <p className="text-muted text-sm text-center py-8">Nenhum item neste filtro.</p>
+              )}
+            </div>
           </div>
         </section>
       </div>
