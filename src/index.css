@@ -16,10 +16,6 @@ body {
   @apply bg-panel/80 backdrop-blur-xl border border-white/5 shadow-glow shadow-soft;
 }
 
-.text-muted {
-  @apply text-muted;
-}
-
 .section-title {
   @apply text-sm font-medium uppercase tracking-[0.18em] text-muted/70;
 }
