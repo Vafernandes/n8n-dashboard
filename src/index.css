@@ -63,6 +63,14 @@ body.theme-light .hover\:bg-white\/5:hover {
   background-color: rgba(15, 17, 21, 0.06) !important;
 }
 
+.status-paid {
+  color: #065f46;
+}
+
+body.theme-dark .status-paid {
+  color: #d1fae5;
+}
+
 .section-title {
   @apply text-sm font-medium uppercase tracking-[0.18em] text-muted/70;
 }

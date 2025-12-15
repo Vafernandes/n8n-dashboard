@@ -13,6 +13,7 @@ import CategoryCard from './components/CategoryCard';
 import SearchBar from './components/SearchBar';
 import TagChip from './components/TagChip';
 import LibraryItem from './components/LibraryItem';
+import SubscriptionPanel from './components/SubscriptionPanel';
 
 const libraryItems = [
   {
@@ -99,6 +100,7 @@ function App() {
   const [cardCvv, setCardCvv] = useState('');
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [view, setView] = useState<'home' | 'subscription'>('home');
   const [query, setQuery] = useState('');
   const [libraryType, setLibraryType] = useState<'Todas' | 'Link' | 'Lembrete' | 'Anotação' | 'Mercado'>('Todas');
 
@@ -145,11 +147,23 @@ function App() {
   ];
 
   const showLogin = !isAuthenticated;
+  const subscription = {
+    status: 'Ativa',
+    renewal: '15/12/2024',
+    plan: 'Pro',
+    paymentMethod: 'Visa •••• 4242',
+    nextCharge: 'R$ 39,90',
+    invoices: [
+      { id: 'fatura-101', date: '15/09/2024', amount: 'R$ 39,90', status: 'Paga' },
+      { id: 'fatura-102', date: '15/10/2024', amount: 'R$ 39,90', status: 'Paga' },
+      { id: 'fatura-103', date: '15/11/2024', amount: 'R$ 39,90', status: 'Paga' },
+    ],
+  } as const;
 
   return (
     <main className="min-h-screen text-white px-4 sm:px-8 pb-16">
       <div className="max-w-6xl mx-auto pt-10 sm:pt-16 flex flex-col gap-10 sm:gap-14">
-        <div className="flex justify-end">
+        <div className="flex justify-between items-center">
           <button
             type="button"
             onClick={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
@@ -168,6 +182,35 @@ function App() {
               </>
             )}
           </button>
+
+          {!showLogin && (
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setView('home')}
+                className={`glass-panel rounded-xl px-3 py-2 text-sm border border-white/10 hover:border-white/20 transition-colors ${view === 'home' ? 'border-accent/60' : ''}`}
+              >
+                Home
+              </button>
+              <button
+                type="button"
+                onClick={() => setView('subscription')}
+                className={`glass-panel rounded-xl px-3 py-2 text-sm border border-white/10 hover:border-white/20 transition-colors ${view === 'subscription' ? 'border-accent/60' : ''}`}
+              >
+                Assinatura
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsAuthenticated(false);
+                  setView('home');
+                }}
+                className="glass-panel rounded-xl px-3 py-2 text-sm border border-white/10 hover:border-white/20 transition-colors"
+              >
+                Sair
+              </button>
+            </div>
+          )}
         </div>
 
         {showLogin ? (
@@ -312,6 +355,8 @@ function App() {
               )}
             </div>
           </section>
+        ) : view === 'subscription' ? (
+          <SubscriptionPanel subscription={subscription} onBack={() => setView('home')} />
         ) : (
           <>
             <header className="text-center space-y-3">
