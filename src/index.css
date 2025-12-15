@@ -12,8 +12,55 @@ body {
     #0f1115;
 }
 
+body.theme-light {
+  color-scheme: light;
+  background: radial-gradient(circle at 20% 20%, rgba(79, 139, 255, 0.12), transparent 26%),
+    radial-gradient(circle at 80% 0%, rgba(255, 99, 247, 0.12), transparent 24%),
+    #f6f7fb;
+  color: #0b1220;
+}
+
 .glass-panel {
   @apply bg-panel/80 backdrop-blur-xl border border-white/5 shadow-glow shadow-soft;
+}
+
+body.theme-light .glass-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(15, 17, 21, 0.08);
+  box-shadow: 0 10px 35px rgba(15, 17, 21, 0.12);
+}
+
+.section-title {
+  @apply text-sm font-medium uppercase tracking-[0.18em] text-muted/70;
+}
+
+/* Light theme overrides for text and utility colors */
+body.theme-light .text-white {
+  color: #0b1220 !important;
+}
+
+body.theme-light .text-muted {
+  color: #4b5565 !important;
+}
+
+body.theme-light .bg-panel {
+  background-color: #ffffff !important;
+}
+
+body.theme-light .bg-white\/5 {
+  background-color: rgba(15, 17, 21, 0.04) !important;
+}
+
+body.theme-light .border-white\/5 {
+  border-color: rgba(15, 17, 21, 0.08) !important;
+}
+
+body.theme-light .border-white\/10 {
+  border-color: rgba(15, 17, 21, 0.12) !important;
+}
+
+body.theme-light .hover\:bg-white\/5:hover {
+  background-color: rgba(15, 17, 21, 0.06) !important;
 }
 
 .section-title {

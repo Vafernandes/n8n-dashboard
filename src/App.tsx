@@ -1,10 +1,12 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   BookmarkSquareIcon,
   CalendarDaysIcon,
   LinkIcon,
   MegaphoneIcon,
+  MoonIcon,
   ShoppingBagIcon,
+  SunIcon,
   Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 import CategoryCard from './components/CategoryCard';
@@ -88,8 +90,14 @@ const libraryItems = [
 ];
 
 function App() {
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [query, setQuery] = useState('');
   const [libraryType, setLibraryType] = useState<'Todas' | 'Link' | 'Lembrete' | 'Anotação' | 'Mercado'>('Todas');
+
+  useEffect(() => {
+    document.body.classList.remove('theme-dark', 'theme-light');
+    document.body.classList.add(`theme-${theme}`);
+  }, [theme]);
 
   const libraryCounts = useMemo(
     () =>
@@ -131,6 +139,27 @@ function App() {
   return (
     <main className="min-h-screen text-white px-4 sm:px-8 pb-16">
       <div className="max-w-6xl mx-auto pt-10 sm:pt-16 flex flex-col gap-10 sm:gap-14">
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
+            className="glass-panel rounded-xl px-3 py-2 flex items-center gap-2 text-sm border border-white/10 hover:border-white/20 transition-colors"
+            aria-label="Alternar tema"
+          >
+            {theme === 'dark' ? (
+              <>
+                <SunIcon className="w-5 h-5 text-accent" aria-hidden />
+                <span>Tema claro</span>
+              </>
+            ) : (
+              <>
+                <MoonIcon className="w-5 h-5 text-accent" aria-hidden />
+                <span>Tema escuro</span>
+              </>
+            )}
+          </button>
+        </div>
+
         <header className="text-center space-y-3">
           <p className="section-title">Personal WhatsApp Agent</p>
           <h1 className="text-3xl sm:text-4xl font-semibold leading-tight">
