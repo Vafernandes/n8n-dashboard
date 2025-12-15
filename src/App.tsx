@@ -90,6 +90,9 @@ const libraryItems = [
 ];
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [accessCode, setAccessCode] = useState('');
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [query, setQuery] = useState('');
   const [libraryType, setLibraryType] = useState<'Todas' | 'Link' | 'Lembrete' | 'Anotação' | 'Mercado'>('Todas');
@@ -136,6 +139,8 @@ function App() {
     { label: 'Eventos', count: 0, icon: <CalendarDaysIcon className="w-6 h-6" aria-hidden /> },
   ];
 
+  const showLogin = !isAuthenticated;
+
   return (
     <main className="min-h-screen text-white px-4 sm:px-8 pb-16">
       <div className="max-w-6xl mx-auto pt-10 sm:pt-16 flex flex-col gap-10 sm:gap-14">
@@ -160,74 +165,130 @@ function App() {
           </button>
         </div>
 
-        <header className="text-center space-y-3">
-          <p className="section-title">Personal WhatsApp Agent</p>
-          <h1 className="text-3xl sm:text-4xl font-semibold leading-tight">
-            Continue de onde parou: um hub que categoriza tudo que chega pelo WhatsApp.
-          </h1>
-          <p className="text-muted max-w-2xl mx-auto">
-            Mensagens, links, lembretes, imagens e áudios são classificados pelo agente em segundos.
-            Visualize, filtre e retome qualquer coisa sem precisar lembrar da conversa original.
-          </p>
-        </header>
-
-        <SearchBar value={query} onChange={setQuery} placeholder="Buscar por título, tag ou trecho salvo" />
-
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="section-title">Categorias e contagem</p>
-            <span className="text-muted text-sm">Visão rápida dos itens já classificados</span>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
-            {categories.map((category) => (
-              <CategoryCard key={category.label} {...category} />
-            ))}
-          </div>
-        </section>
-
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="section-title">Coleção</p>
-            <span className="text-muted text-sm">Tudo que já foi classificado pelo agente</span>
-          </div>
-          <div className="glass-panel rounded-2xl p-4 sm:p-5 space-y-4">
-            <div className="flex flex-wrap gap-2 sm:gap-3 items-center">
-              <TagChip
-                label={`Todas (${libraryCounts.total})`}
-                active={libraryType === 'Todas'}
-                onClick={() => setLibraryType('Todas')}
-              />
-              <TagChip
-                label={`Links (${libraryCounts.Link ?? 0})`}
-                active={libraryType === 'Link'}
-                onClick={() => setLibraryType('Link')}
-              />
-              <TagChip
-                label={`Lembretes (${libraryCounts.Lembrete ?? 0})`}
-                active={libraryType === 'Lembrete'}
-                onClick={() => setLibraryType('Lembrete')}
-              />
-              <TagChip
-                label={`Anotações (${libraryCounts['Anotação'] ?? 0})`}
-                active={libraryType === 'Anotação'}
-                onClick={() => setLibraryType('Anotação')}
-              />
-              <TagChip
-                label={`Mercado (${libraryCounts.Mercado ?? 0})`}
-                active={libraryType === 'Mercado'}
-                onClick={() => setLibraryType('Mercado')}
-              />
+        {showLogin ? (
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="space-y-4">
+              <p className="section-title">Personal WhatsApp Agent</p>
+              <h1 className="text-3xl sm:text-4xl font-semibold leading-tight">
+                Entre para ver suas categorias, contagens e tudo que o agente organizou.
+              </h1>
+              <p className="text-muted">
+                Depois de logar você encontra um painel com filtros, categorias e coleção completa do que já foi
+                classificado a partir do WhatsApp.
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-              {filteredLibrary.map((item) => (
-                <LibraryItem key={item.id} {...item} />
-              ))}
-              {filteredLibrary.length === 0 && (
-                <p className="text-muted text-sm text-center py-8">Nenhum item neste filtro.</p>
-              )}
+
+            <div className="glass-panel rounded-2xl p-6 sm:p-8 space-y-6 border border-white/10">
+              <div className="space-y-2">
+                <p className="text-lg font-semibold">Login seguro</p>
+                <p className="text-sm text-muted">Use seu e-mail para receber um código temporário.</p>
+              </div>
+              <div className="space-y-4">
+                <label className="space-y-2 block">
+                  <span className="text-sm text-muted">E-mail</span>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm focus:outline-none focus:border-accent"
+                    placeholder="voce@exemplo.com"
+                  />
+                </label>
+                <label className="space-y-2 block">
+                  <span className="text-sm text-muted">Código de acesso</span>
+                  <input
+                    type="text"
+                    value={accessCode}
+                    onChange={(e) => setAccessCode(e.target.value)}
+                    className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-sm tracking-[0.2em] uppercase focus:outline-none focus:border-accent"
+                    placeholder="000000"
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setIsAuthenticated(true)}
+                  className="w-full rounded-xl bg-accent text-white font-semibold py-3 hover:opacity-90 transition-opacity"
+                >
+                  Entrar
+                </button>
+                <p className="text-xs text-muted text-center">
+                  Mock: o botão Entrar desbloqueia a interface principal. Integre com seu fluxo real de OTP ou SSO.
+                </p>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : (
+          <>
+            <header className="text-center space-y-3">
+              <p className="section-title">Personal WhatsApp Agent</p>
+              <h1 className="text-3xl sm:text-4xl font-semibold leading-tight">
+                Continue de onde parou: um hub que categoriza tudo que chega pelo WhatsApp.
+              </h1>
+              <p className="text-muted max-w-2xl mx-auto">
+                Mensagens, links, lembretes, imagens e áudios são classificados pelo agente em segundos.
+                Visualize, filtre e retome qualquer coisa sem precisar lembrar da conversa original.
+              </p>
+            </header>
+
+            <SearchBar value={query} onChange={setQuery} placeholder="Buscar por título, tag ou trecho salvo" />
+
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <p className="section-title">Categorias e contagem</p>
+                <span className="text-muted text-sm">Visão rápida dos itens já classificados</span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4">
+                {categories.map((category) => (
+                  <CategoryCard key={category.label} {...category} />
+                ))}
+              </div>
+            </section>
+
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <p className="section-title">Coleção</p>
+                <span className="text-muted text-sm">Tudo que já foi classificado pelo agente</span>
+              </div>
+              <div className="glass-panel rounded-2xl p-4 sm:p-5 space-y-4">
+                <div className="flex flex-wrap gap-2 sm:gap-3 items-center">
+                  <TagChip
+                    label={`Todas (${libraryCounts.total})`}
+                    active={libraryType === 'Todas'}
+                    onClick={() => setLibraryType('Todas')}
+                  />
+                  <TagChip
+                    label={`Links (${libraryCounts.Link ?? 0})`}
+                    active={libraryType === 'Link'}
+                    onClick={() => setLibraryType('Link')}
+                  />
+                  <TagChip
+                    label={`Lembretes (${libraryCounts.Lembrete ?? 0})`}
+                    active={libraryType === 'Lembrete'}
+                    onClick={() => setLibraryType('Lembrete')}
+                  />
+                  <TagChip
+                    label={`Anotações (${libraryCounts['Anotação'] ?? 0})`}
+                    active={libraryType === 'Anotação'}
+                    onClick={() => setLibraryType('Anotação')}
+                  />
+                  <TagChip
+                    label={`Mercado (${libraryCounts.Mercado ?? 0})`}
+                    active={libraryType === 'Mercado'}
+                    onClick={() => setLibraryType('Mercado')}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                  {filteredLibrary.map((item) => (
+                    <LibraryItem key={item.id} {...item} />
+                  ))}
+                  {filteredLibrary.length === 0 && (
+                    <p className="text-muted text-sm text-center py-8">Nenhum item neste filtro.</p>
+                  )}
+                </div>
+              </div>
+            </section>
+          </>
+        )}
       </div>
     </main>
   );
