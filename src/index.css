@@ -17,5 +17,6 @@ body {
 }
 
 .section-title {
-  @apply text-sm font-medium uppercase tracking-[0.18em] text-muted/70;
+  @apply text-sm font-medium uppercase tracking-[0.18em];
+  color: rgb(139 149 165 / 0.7);
 }
