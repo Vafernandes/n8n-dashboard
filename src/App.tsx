@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { server } from './services/server';
 import {
   BookmarkSquareIcon,
   CalendarDaysIcon,
@@ -15,80 +16,84 @@ import TagChip from './components/TagChip';
 import LibraryItem from './components/LibraryItem';
 import SubscriptionPanel from './components/SubscriptionPanel';
 
-const libraryItems = [
-  {
-    id: 'lib-1',
-    type: 'Link' as const,
-    title: 'Artigo: “IA no atendimento — casos reais”',
-    preview: 'Resumo do artigo com exemplos de automações em SAC e follow-up pro time de CX.',
-    tags: ['link', 'ia', 'cx'],
-    addedAt: 'há 8 min',
-  },
-  {
-    id: 'lib-2',
-    type: 'Link' as const,
-    title: 'Roteiro Lisboa → Porto (Notion)',
-    preview: 'Mapa com cafés, coworkings e trilhas de fim de semana para a viagem.',
-    tags: ['viagem', 'mapa', 'link'],
-    addedAt: 'há 22 min',
-  },
-  {
-    id: 'lib-3',
-    type: 'Link' as const,
-    title: 'Template de UX heurísticas',
-    preview: 'Checklist com 10 heurísticas e seção de insights para revisões rápidas.',
-    tags: ['ux', 'checklist'],
-    addedAt: 'há 1 hora',
-  },
-  {
-    id: 'lib-4',
-    type: 'Link' as const,
-    title: 'Planilha de controle financeiro',
-    preview: 'Organização de pagamentos mensais + lembrete de reajuste do coworking.',
-    tags: ['financeiro', 'link'],
-    addedAt: 'ontem',
-  },
-  {
-    id: 'lib-5',
-    type: 'Link' as const,
-    title: 'Curadoria de podcasts sobre IA',
-    preview: '3 episódios marcados para ouvir no fim de semana.',
-    tags: ['podcast', 'ia'],
-    addedAt: '2 dias atrás',
-  },
-  {
-    id: 'lib-6',
-    type: 'Lembrete' as const,
-    title: 'Renovar filtro de água',
-    preview: 'Comprar refil junto com a lista de mercado desta semana.',
-    tags: ['lembrete', 'casa'],
-    addedAt: 'há 3 horas',
-  },
-  {
-    id: 'lib-7',
-    type: 'Lembrete' as const,
-    title: 'Enviar comprovante do coworking',
-    preview: 'Confirmar pagamento e mandar recibo para o administrativo.',
-    tags: ['financeiro', 'urgente'],
-    addedAt: 'ontem',
-  },
-  {
-    id: 'lib-8',
-    type: 'Anotação' as const,
-    title: 'Checklist de reunião de quarta',
-    preview: 'Q4 pipeline, bugs críticos, owners do lançamento mobile.',
-    tags: ['reunião', 'prioridade'],
-    addedAt: 'há 30 min',
-  },
-  {
-    id: 'lib-9',
-    type: 'Mercado' as const,
-    title: 'Lista rápida: café, aveia, frutas vermelhas',
-    preview: 'Adicionar filtro de água e granola se tiver promoção.',
-    tags: ['mercado', 'compras'],
-    addedAt: 'há 2 horas',
-  },
-];
+type ItemType = 'Link' | 'Lembrete' | 'Anotação' | 'Mercado';
+
+interface LibraryItemData {
+  id: string;
+  type: ItemType;
+  title: string;
+  preview: string;
+  tags: string[];
+  addedAt: string;
+}
+
+interface NoteResponse {
+  mongoId: string;
+  userMessage: string | null;
+  externalId: string | null;
+  userId: string;
+  type: string;
+  content?: {
+    text?: string | null;
+    caption?: string | null;
+  } | null;
+  metadata?: {
+    remindAt?: string | null;
+    url?: string | null;
+    imageUrl?: string | null;
+    audioUrl?: string | null;
+    duration?: number | null;
+    confidence?: number | null;
+    tags?: string[] | null;
+  } | null;
+  status: string;
+  source?: {
+    channel?: string | null;
+    messageId?: string | null;
+  } | null;
+  createdAt: string;
+  updatedAt: string;
+  toolCallId?: string | null;
+}
+
+const mapNoteType = (type: string): ItemType => {
+  const normalized = type.toLowerCase();
+
+  if (normalized === 'link') return 'Link';
+  if (normalized === 'reminder' || normalized === 'lembrete') return 'Lembrete';
+  if (normalized === 'market' || normalized === 'mercado') return 'Mercado';
+
+  return 'Anotação';
+};
+
+const formatDate = (value?: string | null) => {
+  if (!value) return 'Sem data';
+
+  return new Date(value).toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+};
+
+const buildLibraryItem = (note: NoteResponse): LibraryItemData => {
+  const title = note.metadata?.url || note.userMessage || 'Sem título';
+  const preview =
+    note.content?.text ||
+    note.content?.caption ||
+    note.metadata?.url ||
+    note.userMessage ||
+    'Sem descrição';
+
+  return {
+    id: note.mongoId || note.externalId || `${note.userId}-${note.createdAt}`,
+    type: mapNoteType(note.type),
+    title,
+    preview,
+    tags: note.metadata?.tags?.filter(Boolean) ?? [],
+    addedAt: formatDate(note.createdAt),
+  };
+};
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -103,11 +108,46 @@ function App() {
   const [view, setView] = useState<'home' | 'subscription'>('home');
   const [query, setQuery] = useState('');
   const [libraryType, setLibraryType] = useState<'Todas' | 'Link' | 'Lembrete' | 'Anotação' | 'Mercado'>('Todas');
+  const [libraryItems, setLibraryItems] = useState<LibraryItemData[]>([]);
+  const [libraryLoading, setLibraryLoading] = useState(false);
+  const [libraryError, setLibraryError] = useState<string | null>(null);
 
   useEffect(() => {
     document.body.classList.remove('theme-dark', 'theme-light');
     document.body.classList.add(`theme-${theme}`);
   }, [theme]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    let isMounted = true;
+
+    const fetchNotes = async () => {
+      setLibraryLoading(true);
+      setLibraryError(null);
+
+      try {
+        const response = await server.get<NoteResponse[]>('/notes/558899956689');
+
+        if (!isMounted) return;
+
+        const items = response.data.map(buildLibraryItem);
+        setLibraryItems(items);
+      } catch (error) {
+        if (!isMounted) return;
+        setLibraryError('Não foi possível carregar os itens do WhatsApp.');
+      } finally {
+        if (!isMounted) return;
+        setLibraryLoading(false);
+      }
+    };
+
+    fetchNotes();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isAuthenticated]);
 
   const libraryCounts = useMemo(
     () =>
@@ -119,7 +159,7 @@ function App() {
         },
         { total: 0 } as Record<string, number>
       ),
-    []
+    [libraryItems]
   );
 
   const filteredLibrary = useMemo(() => {
@@ -135,7 +175,7 @@ function App() {
 
       return matchesType && matchesQuery;
     });
-  }, [libraryType, query]);
+  }, [libraryItems, libraryType, query]);
 
   const categories = [
     { label: 'Total', count: libraryCounts.total, icon: <Squares2X2Icon className="w-6 h-6" aria-hidden /> },
@@ -418,11 +458,19 @@ function App() {
                   />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                  {filteredLibrary.map((item) => (
-                    <LibraryItem key={item.id} {...item} />
-                  ))}
-                  {filteredLibrary.length === 0 && (
-                    <p className="text-muted text-sm text-center py-8">Nenhum item neste filtro.</p>
+                  {libraryLoading ? (
+                    <p className="text-muted text-sm text-center py-8">Carregando itens do WhatsApp...</p>
+                  ) : libraryError ? (
+                    <p className="text-muted text-sm text-center py-8">{libraryError}</p>
+                  ) : (
+                    <>
+                      {filteredLibrary.map((item) => (
+                        <LibraryItem key={item.id} {...item} />
+                      ))}
+                      {filteredLibrary.length === 0 && (
+                        <p className="text-muted text-sm text-center py-8">Nenhum item neste filtro.</p>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
