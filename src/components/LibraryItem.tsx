@@ -1,12 +1,27 @@
-import { BookmarkSquareIcon, LinkIcon, MegaphoneIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import {
+  BellAlertIcon,
+  CalendarDaysIcon,
+  ClipboardDocumentCheckIcon,
+  DocumentTextIcon,
+  EllipsisHorizontalCircleIcon,
+  LinkIcon,
+  PaperClipIcon,
+  UserIcon,
+  WalletIcon,
+} from '@heroicons/react/24/outline';
 import TagChip from './TagChip';
 import type { ItemType } from '../types/library';
 
 const TYPE_ICON: Record<ItemType, JSX.Element> = {
-  Link: <LinkIcon className="w-5 h-5" aria-hidden />,
-  Lembrete: <MegaphoneIcon className="w-5 h-5" aria-hidden />,
-  Anotação: <BookmarkSquareIcon className="w-5 h-5" aria-hidden />,
-  Mercado: <ShoppingBagIcon className="w-5 h-5" aria-hidden />,
+  Links: <LinkIcon className="w-5 h-5" aria-hidden />,
+  Lembretes: <BellAlertIcon className="w-5 h-5" aria-hidden />,
+  Anotações: <DocumentTextIcon className="w-5 h-5" aria-hidden />,
+  Listas: <ClipboardDocumentCheckIcon className="w-5 h-5" aria-hidden />,
+  Eventos: <CalendarDaysIcon className="w-5 h-5" aria-hidden />,
+  Financeiro: <WalletIcon className="w-5 h-5" aria-hidden />,
+  Arquivos: <PaperClipIcon className="w-5 h-5" aria-hidden />,
+  Contatos: <UserIcon className="w-5 h-5" aria-hidden />,
+  Outros: <EllipsisHorizontalCircleIcon className="w-5 h-5" aria-hidden />,
 };
 
 interface LibraryItemProps {
@@ -30,7 +45,7 @@ const toHref = (value: string) => {
 
 const LibraryItem = ({ type, title, preview, tags, addedAt }: LibraryItemProps) => {
   const primaryHref = toHref(title) || toHref(preview);
-  const isLink = type === 'Link' && Boolean(primaryHref);
+  const isLink = type === 'Links' && Boolean(primaryHref);
   const linkClassName =
     'text-base font-semibold leading-tight text-accent hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/70 rounded-sm break-all';
 
@@ -42,24 +57,13 @@ const LibraryItem = ({ type, title, preview, tags, addedAt }: LibraryItemProps) 
         </span>
         <div className="space-y-1 min-w-0">
           <p className="text-xs uppercase tracking-[0.18em] text-muted">{type}</p>
+          <p className="text-base font-semibold leading-tight break-words">{preview}</p>
           {isLink ? (
             <a href={primaryHref} target="_blank" rel="noreferrer" className={linkClassName}>
               {title}
             </a>
           ) : (
-            <p className="text-base font-semibold leading-tight break-words">{title}</p>
-          )}
-          {isLink ? (
-            <a
-              href={primaryHref}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm text-muted line-clamp-2 break-all hover:text-white/80"
-            >
-              {preview}
-            </a>
-          ) : (
-            <p className="text-sm text-muted line-clamp-2 break-words">{preview}</p>
+            <p className="text-sm text-muted line-clamp-2 break-words">{title}</p>
           )}
           <div className="flex flex-wrap gap-2 mt-2">
             {tags.map((tag) => (

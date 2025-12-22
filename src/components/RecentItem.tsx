@@ -1,10 +1,11 @@
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import ContextBadge from './ContextBadge';
 import TagChip from './TagChip';
+import type { ItemType } from '../types/library';
 
 export interface RecentItemType {
   id: string;
-  type: 'Link' | 'Lembrete' | 'Anotação' | 'Mercado' | 'Evento';
+  type: ItemType;
   summary: string;
   tags: string[];
   context: 'Educacional' | 'Compra' | 'Evento' | 'Financeiro' | 'Lazer';

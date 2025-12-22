@@ -1,4 +1,13 @@
-export type ItemType = 'Link' | 'Lembrete' | 'Anotação' | 'Mercado';
+export type ItemType =
+  | 'Links'
+  | 'Lembretes'
+  | 'Anotações'
+  | 'Listas'
+  | 'Eventos'
+  | 'Financeiro'
+  | 'Arquivos'
+  | 'Contatos'
+  | 'Outros';
 
 export type LibraryFilter = 'Todas' | ItemType;
 
@@ -42,8 +51,13 @@ export interface NoteResponse {
 
 export interface LibraryCounts {
   total: number;
-  Link: number;
-  Lembrete: number;
-  Anotação: number;
-  Mercado: number;
+  Links: number;
+  Lembretes: number;
+  Anotações: number;
+  Listas: number;
+  Eventos: number;
+  Financeiro: number;
+  Arquivos: number;
+  Contatos: number;
+  Outros: number;
 }

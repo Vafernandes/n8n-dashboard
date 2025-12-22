@@ -1,13 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
-  BookmarkSquareIcon,
+  BellAlertIcon,
   CalendarDaysIcon,
+  ClipboardDocumentCheckIcon,
+  DocumentTextIcon,
+  EllipsisHorizontalCircleIcon,
   LinkIcon,
-  MegaphoneIcon,
   MoonIcon,
-  ShoppingBagIcon,
+  PaperClipIcon,
   SunIcon,
   Squares2X2Icon,
+  UserIcon,
+  WalletIcon,
 } from '@heroicons/react/24/outline';
 import CategoryCard from './components/CategoryCard';
 import SearchBar from './components/SearchBar';
@@ -54,11 +58,15 @@ function App() {
   const categories = useMemo(
     () => [
       { label: 'Total', count: libraryCounts.total, icon: <Squares2X2Icon className="w-6 h-6" aria-hidden /> },
-      { label: 'Links', count: libraryCounts.Link, icon: <LinkIcon className="w-6 h-6" aria-hidden /> },
-      { label: 'Lembretes', count: libraryCounts.Lembrete, icon: <MegaphoneIcon className="w-6 h-6" aria-hidden /> },
-      { label: 'Anotações', count: libraryCounts['Anotação'], icon: <BookmarkSquareIcon className="w-6 h-6" aria-hidden /> },
-      { label: 'Mercado', count: libraryCounts.Mercado, icon: <ShoppingBagIcon className="w-6 h-6" aria-hidden /> },
-      { label: 'Eventos', count: 0, icon: <CalendarDaysIcon className="w-6 h-6" aria-hidden /> },
+      { label: 'Links', count: libraryCounts.Links, icon: <LinkIcon className="w-6 h-6" aria-hidden /> },
+      { label: 'Lembretes', count: libraryCounts.Lembretes, icon: <BellAlertIcon className="w-6 h-6" aria-hidden /> },
+      { label: 'Anotações', count: libraryCounts['Anotações'], icon: <DocumentTextIcon className="w-6 h-6" aria-hidden /> },
+      { label: 'Listas', count: libraryCounts.Listas, icon: <ClipboardDocumentCheckIcon className="w-6 h-6" aria-hidden /> },
+      { label: 'Eventos', count: libraryCounts.Eventos, icon: <CalendarDaysIcon className="w-6 h-6" aria-hidden /> },
+      { label: 'Financeiro', count: libraryCounts.Financeiro, icon: <WalletIcon className="w-6 h-6" aria-hidden /> },
+      { label: 'Arquivos', count: libraryCounts.Arquivos, icon: <PaperClipIcon className="w-6 h-6" aria-hidden /> },
+      { label: 'Contatos', count: libraryCounts.Contatos, icon: <UserIcon className="w-6 h-6" aria-hidden /> },
+      { label: 'Outros', count: libraryCounts.Outros, icon: <EllipsisHorizontalCircleIcon className="w-6 h-6" aria-hidden /> },
     ],
     [libraryCounts]
   );
@@ -66,10 +74,15 @@ function App() {
   const libraryFilters = useMemo(
     () => [
       { value: 'Todas' as const, label: 'Todas', count: libraryCounts.total },
-      { value: 'Link' as const, label: 'Links', count: libraryCounts.Link },
-      { value: 'Lembrete' as const, label: 'Lembretes', count: libraryCounts.Lembrete },
-      { value: 'Anotação' as const, label: 'Anotações', count: libraryCounts['Anotação'] },
-      { value: 'Mercado' as const, label: 'Mercado', count: libraryCounts.Mercado },
+      { value: 'Links' as const, label: 'Links', count: libraryCounts.Links },
+      { value: 'Lembretes' as const, label: 'Lembretes', count: libraryCounts.Lembretes },
+      { value: 'Anotações' as const, label: 'Anotações', count: libraryCounts['Anotações'] },
+      { value: 'Listas' as const, label: 'Listas', count: libraryCounts.Listas },
+      { value: 'Eventos' as const, label: 'Eventos', count: libraryCounts.Eventos },
+      { value: 'Financeiro' as const, label: 'Financeiro', count: libraryCounts.Financeiro },
+      { value: 'Arquivos' as const, label: 'Arquivos', count: libraryCounts.Arquivos },
+      { value: 'Contatos' as const, label: 'Contatos', count: libraryCounts.Contatos },
+      { value: 'Outros' as const, label: 'Outros', count: libraryCounts.Outros },
     ],
     [libraryCounts]
   );

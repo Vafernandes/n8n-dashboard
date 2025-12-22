@@ -2,20 +2,34 @@ import type { ItemType, LibraryCounts, LibraryFilter, LibraryItemData, NoteRespo
 
 export const INITIAL_LIBRARY_COUNTS: LibraryCounts = {
   total: 0,
-  Link: 0,
-  Lembrete: 0,
-  Anotação: 0,
-  Mercado: 0,
+  Links: 0,
+  Lembretes: 0,
+  Anotações: 0,
+  Listas: 0,
+  Eventos: 0,
+  Financeiro: 0,
+  Arquivos: 0,
+  Contatos: 0,
+  Outros: 0,
 };
 
 const mapNoteType = (type: string): ItemType => {
   const normalized = type.toLowerCase();
 
-  if (normalized === 'link') return 'Link';
-  if (normalized === 'reminder' || normalized === 'lembrete') return 'Lembrete';
-  if (normalized === 'market' || normalized === 'mercado') return 'Mercado';
+  if (['link', 'links', 'url', 'website', 'site'].includes(normalized)) return 'Links';
+  if (['reminder', 'lembrete', 'alerta', 'alarme', 'alert'].includes(normalized)) return 'Lembretes';
+  if (['note', 'notes', 'anotação', 'anotacoes', 'anotações', 'anotacao', 'texto', 'text'].includes(normalized))
+    return 'Anotações';
+  if (['list', 'lista', 'listas', 'checklist', 'tarefas', 'todo'].includes(normalized)) return 'Listas';
+  if (['event', 'events', 'evento', 'eventos', 'agenda', 'calendar', 'calendario', 'calendário'].includes(normalized))
+    return 'Eventos';
+  if (['finance', 'financeiro', 'pagamento', 'payment', 'conta', 'billing'].includes(normalized))
+    return 'Financeiro';
+  if (['file', 'files', 'arquivo', 'arquivos', 'documento', 'document'].includes(normalized)) return 'Arquivos';
+  if (['contact', 'contato', 'contatos', 'pessoa', 'cliente', 'lead'].includes(normalized)) return 'Contatos';
+  if (['other', 'outro', 'outros', 'misc', 'diverso'].includes(normalized)) return 'Outros';
 
-  return 'Anotação';
+  return 'Outros';
 };
 
 const formatDate = (value?: string | null) => {
