@@ -3,7 +3,6 @@ export type ItemType =
   | 'Lembretes'
   | 'Anotações'
   | 'Listas'
-  | 'Eventos'
   | 'Financeiro'
   | 'Arquivos'
   | 'Contatos'
@@ -55,7 +54,6 @@ export interface LibraryCounts {
   Lembretes: number;
   Anotações: number;
   Listas: number;
-  Eventos: number;
   Financeiro: number;
   Arquivos: number;
   Contatos: number;

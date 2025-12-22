@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   BellAlertIcon,
-  CalendarDaysIcon,
   ClipboardDocumentCheckIcon,
   DocumentTextIcon,
   EllipsisHorizontalCircleIcon,
@@ -62,7 +61,6 @@ function App() {
       { label: 'Lembretes', count: libraryCounts.Lembretes, icon: <BellAlertIcon className="w-6 h-6" aria-hidden /> },
       { label: 'Anotações', count: libraryCounts['Anotações'], icon: <DocumentTextIcon className="w-6 h-6" aria-hidden /> },
       { label: 'Listas', count: libraryCounts.Listas, icon: <ClipboardDocumentCheckIcon className="w-6 h-6" aria-hidden /> },
-      { label: 'Eventos', count: libraryCounts.Eventos, icon: <CalendarDaysIcon className="w-6 h-6" aria-hidden /> },
       { label: 'Financeiro', count: libraryCounts.Financeiro, icon: <WalletIcon className="w-6 h-6" aria-hidden /> },
       { label: 'Arquivos', count: libraryCounts.Arquivos, icon: <PaperClipIcon className="w-6 h-6" aria-hidden /> },
       { label: 'Contatos', count: libraryCounts.Contatos, icon: <UserIcon className="w-6 h-6" aria-hidden /> },
@@ -78,7 +76,6 @@ function App() {
       { value: 'Lembretes' as const, label: 'Lembretes', count: libraryCounts.Lembretes },
       { value: 'Anotações' as const, label: 'Anotações', count: libraryCounts['Anotações'] },
       { value: 'Listas' as const, label: 'Listas', count: libraryCounts.Listas },
-      { value: 'Eventos' as const, label: 'Eventos', count: libraryCounts.Eventos },
       { value: 'Financeiro' as const, label: 'Financeiro', count: libraryCounts.Financeiro },
       { value: 'Arquivos' as const, label: 'Arquivos', count: libraryCounts.Arquivos },
       { value: 'Contatos' as const, label: 'Contatos', count: libraryCounts.Contatos },

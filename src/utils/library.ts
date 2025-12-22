@@ -6,7 +6,6 @@ export const INITIAL_LIBRARY_COUNTS: LibraryCounts = {
   Lembretes: 0,
   Anotações: 0,
   Listas: 0,
-  Eventos: 0,
   Financeiro: 0,
   Arquivos: 0,
   Contatos: 0,
@@ -21,8 +20,6 @@ const mapNoteType = (type: string): ItemType => {
   if (['note', 'notes', 'anotação', 'anotacoes', 'anotações', 'anotacao', 'texto', 'text'].includes(normalized))
     return 'Anotações';
   if (['list', 'lista', 'listas', 'checklist', 'tarefas', 'todo'].includes(normalized)) return 'Listas';
-  if (['event', 'events', 'evento', 'eventos', 'agenda', 'calendar', 'calendario', 'calendário'].includes(normalized))
-    return 'Eventos';
   if (['finance', 'financeiro', 'pagamento', 'payment', 'conta', 'billing'].includes(normalized))
     return 'Financeiro';
   if (['file', 'files', 'arquivo', 'arquivos', 'documento', 'document'].includes(normalized)) return 'Arquivos';
