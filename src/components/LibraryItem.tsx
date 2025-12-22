@@ -1,7 +1,6 @@
 import { BookmarkSquareIcon, LinkIcon, MegaphoneIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import TagChip from './TagChip';
-
-type ItemType = 'Link' | 'Lembrete' | 'Anotação' | 'Mercado';
+import type { ItemType } from '../types/library';
 
 const TYPE_ICON: Record<ItemType, JSX.Element> = {
   Link: <LinkIcon className="w-5 h-5" aria-hidden />,
