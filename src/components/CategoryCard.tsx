@@ -16,7 +16,6 @@ const CategoryCard = ({ label, count, icon }: CategoryCardProps) => {
         <span className="text-xs font-medium text-muted">{count} items</span>
       </div>
       <p className="text-lg font-semibold">{label}</p>
-      <p className="text-sm text-muted">Quick glance counter to guide navigation.</p>
     </div>
   );
 };

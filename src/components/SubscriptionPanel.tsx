@@ -1,4 +1,4 @@
-interface SubscriptionData {
+export interface SubscriptionData {
   status: string;
   renewal: string;
   plan: string;
