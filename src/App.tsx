@@ -14,32 +14,18 @@ import SearchBar from './components/SearchBar';
 import TagChip from './components/TagChip';
 import LibraryItem from './components/LibraryItem';
 import SubscriptionPanel from './components/SubscriptionPanel';
-import AuthPanel, { type AuthFormData, type AuthMode } from './components/AuthPanel';
 import { subscriptionMock } from './data/subscription';
 import { useLibrary } from './hooks/useLibrary';
 import type { LibraryFilter } from './types/library';
 import { filterLibraryItems } from './utils/library';
 
-const INITIAL_AUTH_FORM: AuthFormData = {
-  email: '',
-  accessCode: '',
-  password: '',
-  cardNumber: '',
-  cardExp: '',
-  cardCvv: '',
-};
-
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authMode, setAuthMode] = useState<AuthMode>('login');
-  const [authForm, setAuthForm] = useState<AuthFormData>(INITIAL_AUTH_FORM);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [view, setView] = useState<'home' | 'subscription'>('home');
   const [query, setQuery] = useState('');
   const [libraryType, setLibraryType] = useState<LibraryFilter>('Todas');
-  const { items: libraryItems, loading: libraryLoading, error: libraryError, counts: libraryCounts } = useLibrary(
-    isAuthenticated
-  );
+  const { items: libraryItems, loading: libraryLoading, error: libraryError, counts: libraryCounts } =
+    useLibrary(true);
 
   useEffect(() => {
     document.body.classList.remove('theme-dark', 'theme-light');
@@ -75,11 +61,6 @@ function App() {
     [libraryCounts]
   );
 
-  const showLogin = !isAuthenticated;
-  const handleAuthFieldChange = (field: keyof AuthFormData, value: string) => {
-    setAuthForm((prev) => ({ ...prev, [field]: value }));
-  };
-
   return (
     <main className="min-h-screen text-white px-4 sm:px-8 pb-16">
       <div className="max-w-6xl mx-auto pt-10 sm:pt-16 flex flex-col gap-10 sm:gap-14">
@@ -103,59 +84,25 @@ function App() {
             )}
           </button>
 
-          {!showLogin && (
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setView('home')}
-                className={`glass-panel rounded-xl px-3 py-2 text-sm border border-white/10 hover:border-white/20 transition-colors ${view === 'home' ? 'border-accent/60' : ''}`}
-              >
-                Home
-              </button>
-              <button
-                type="button"
-                onClick={() => setView('subscription')}
-                className={`glass-panel rounded-xl px-3 py-2 text-sm border border-white/10 hover:border-white/20 transition-colors ${view === 'subscription' ? 'border-accent/60' : ''}`}
-              >
-                Assinatura
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsAuthenticated(false);
-                  setView('home');
-                }}
-                className="glass-panel rounded-xl px-3 py-2 text-sm border border-white/10 hover:border-white/20 transition-colors"
-              >
-                Sair
-              </button>
-            </div>
-          )}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setView('home')}
+              className={`glass-panel rounded-xl px-3 py-2 text-sm border border-white/10 hover:border-white/20 transition-colors ${view === 'home' ? 'border-accent/60' : ''}`}
+            >
+              Home
+            </button>
+            <button
+              type="button"
+              onClick={() => setView('subscription')}
+              className={`glass-panel rounded-xl px-3 py-2 text-sm border border-white/10 hover:border-white/20 transition-colors ${view === 'subscription' ? 'border-accent/60' : ''}`}
+            >
+              Assinatura
+            </button>
+          </div>
         </div>
 
-        {showLogin ? (
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="space-y-4">
-              <p className="section-title">Personal WhatsApp Agent</p>
-              <h1 className="text-3xl sm:text-4xl font-semibold leading-tight">
-                Entre para ver suas categorias, contagens e tudo que o agente organizou.
-              </h1>
-              <p className="text-muted">
-                Depois de logar você encontra um painel com filtros, categorias e coleção completa do que já foi
-                classificado a partir do WhatsApp.
-              </p>
-            </div>
-
-            <AuthPanel
-              mode={authMode}
-              form={authForm}
-              onModeChange={setAuthMode}
-              onFieldChange={handleAuthFieldChange}
-              onLogin={() => setIsAuthenticated(true)}
-              onSignup={() => setIsAuthenticated(true)}
-            />
-          </section>
-        ) : view === 'subscription' ? (
+        {view === 'subscription' ? (
           <SubscriptionPanel subscription={subscriptionMock} onBack={() => setView('home')} />
         ) : (
           <>
