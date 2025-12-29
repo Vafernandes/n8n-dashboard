@@ -5,8 +5,6 @@ import {
   DocumentTextIcon,
   EllipsisHorizontalCircleIcon,
   LinkIcon,
-  MoonIcon,
-  SunIcon,
   Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 import CategoryCard from './components/CategoryCard';
@@ -20,7 +18,6 @@ import type { LibraryFilter } from './types/library';
 import { filterLibraryItems } from './utils/library';
 
 function App() {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [view, setView] = useState<'home' | 'subscription'>('home');
   const [query, setQuery] = useState('');
   const [libraryType, setLibraryType] = useState<LibraryFilter>('Todas');
@@ -28,9 +25,9 @@ function App() {
     useLibrary(true);
 
   useEffect(() => {
-    document.body.classList.remove('theme-dark', 'theme-light');
-    document.body.classList.add(`theme-${theme}`);
-  }, [theme]);
+    document.body.classList.remove('theme-light');
+    document.body.classList.add('theme-dark');
+  }, []);
 
   const filteredLibrary = useMemo(
     () => filterLibraryItems(libraryItems, libraryType, query),
@@ -65,24 +62,7 @@ function App() {
     <main className="min-h-screen text-white px-4 sm:px-8 pb-16">
       <div className="max-w-6xl mx-auto pt-10 sm:pt-16 flex flex-col gap-10 sm:gap-14">
         <div className="flex justify-between items-center">
-          <button
-            type="button"
-            onClick={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
-            className="glass-panel rounded-xl px-3 py-2 flex items-center gap-2 text-sm border border-white/10 hover:border-white/20 transition-colors"
-            aria-label="Alternar tema"
-          >
-            {theme === 'dark' ? (
-              <>
-                <SunIcon className="w-5 h-5 text-accent" aria-hidden />
-                <span>Tema claro</span>
-              </>
-            ) : (
-              <>
-                <MoonIcon className="w-5 h-5 text-accent" aria-hidden />
-                <span>Tema escuro</span>
-              </>
-            )}
-          </button>
+          <div />
 
           <div className="flex items-center gap-3">
             <button
