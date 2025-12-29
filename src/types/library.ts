@@ -3,9 +3,6 @@ export type ItemType =
   | 'Lembretes'
   | 'Anotações'
   | 'Listas'
-  | 'Financeiro'
-  | 'Arquivos'
-  | 'Contatos'
   | 'Outros';
 
 export type LibraryFilter = 'Todas' | ItemType;
@@ -54,8 +51,5 @@ export interface LibraryCounts {
   Lembretes: number;
   Anotações: number;
   Listas: number;
-  Financeiro: number;
-  Arquivos: number;
-  Contatos: number;
   Outros: number;
 }

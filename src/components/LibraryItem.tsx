@@ -4,9 +4,6 @@ import {
   DocumentTextIcon,
   EllipsisHorizontalCircleIcon,
   LinkIcon,
-  PaperClipIcon,
-  UserIcon,
-  WalletIcon,
 } from '@heroicons/react/24/outline';
 import TagChip from './TagChip';
 import type { ItemType } from '../types/library';
@@ -16,9 +13,6 @@ const TYPE_ICON: Record<ItemType, JSX.Element> = {
   Lembretes: <BellAlertIcon className="w-5 h-5" aria-hidden />,
   Anotações: <DocumentTextIcon className="w-5 h-5" aria-hidden />,
   Listas: <ClipboardDocumentCheckIcon className="w-5 h-5" aria-hidden />,
-  Financeiro: <WalletIcon className="w-5 h-5" aria-hidden />,
-  Arquivos: <PaperClipIcon className="w-5 h-5" aria-hidden />,
-  Contatos: <UserIcon className="w-5 h-5" aria-hidden />,
   Outros: <EllipsisHorizontalCircleIcon className="w-5 h-5" aria-hidden />,
 };
 

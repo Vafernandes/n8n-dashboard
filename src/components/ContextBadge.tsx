@@ -2,7 +2,6 @@ const CONTEXT_STYLES: Record<string, string> = {
   Educacional: 'bg-blue-500/15 text-blue-200 border-blue-400/40',
   Compra: 'bg-green-500/15 text-green-200 border-green-400/40',
   Evento: 'bg-purple-500/15 text-purple-200 border-purple-400/40',
-  Financeiro: 'bg-orange-500/15 text-orange-200 border-orange-400/40',
   Lazer: 'bg-pink-500/15 text-pink-200 border-pink-400/40',
 };
 

@@ -6,11 +6,8 @@ import {
   EllipsisHorizontalCircleIcon,
   LinkIcon,
   MoonIcon,
-  PaperClipIcon,
   SunIcon,
   Squares2X2Icon,
-  UserIcon,
-  WalletIcon,
 } from '@heroicons/react/24/outline';
 import CategoryCard from './components/CategoryCard';
 import SearchBar from './components/SearchBar';
@@ -61,9 +58,6 @@ function App() {
       { label: 'Lembretes', count: libraryCounts.Lembretes, icon: <BellAlertIcon className="w-6 h-6" aria-hidden /> },
       { label: 'Anotações', count: libraryCounts['Anotações'], icon: <DocumentTextIcon className="w-6 h-6" aria-hidden /> },
       { label: 'Listas', count: libraryCounts.Listas, icon: <ClipboardDocumentCheckIcon className="w-6 h-6" aria-hidden /> },
-      { label: 'Financeiro', count: libraryCounts.Financeiro, icon: <WalletIcon className="w-6 h-6" aria-hidden /> },
-      { label: 'Arquivos', count: libraryCounts.Arquivos, icon: <PaperClipIcon className="w-6 h-6" aria-hidden /> },
-      { label: 'Contatos', count: libraryCounts.Contatos, icon: <UserIcon className="w-6 h-6" aria-hidden /> },
       { label: 'Outros', count: libraryCounts.Outros, icon: <EllipsisHorizontalCircleIcon className="w-6 h-6" aria-hidden /> },
     ],
     [libraryCounts]
@@ -76,9 +70,6 @@ function App() {
       { value: 'Lembretes' as const, label: 'Lembretes', count: libraryCounts.Lembretes },
       { value: 'Anotações' as const, label: 'Anotações', count: libraryCounts['Anotações'] },
       { value: 'Listas' as const, label: 'Listas', count: libraryCounts.Listas },
-      { value: 'Financeiro' as const, label: 'Financeiro', count: libraryCounts.Financeiro },
-      { value: 'Arquivos' as const, label: 'Arquivos', count: libraryCounts.Arquivos },
-      { value: 'Contatos' as const, label: 'Contatos', count: libraryCounts.Contatos },
       { value: 'Outros' as const, label: 'Outros', count: libraryCounts.Outros },
     ],
     [libraryCounts]
