@@ -47,15 +47,15 @@ const LibraryItem = ({ type, title, preview, tags, addedAt }: LibraryItemProps) 
         <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 text-accent border border-white/5">
           {TYPE_ICON[type]}
         </span>
-        <div className="space-y-1 min-w-0">
+        <div className="space-y-3 min-w-0">
           <p className="text-xs uppercase tracking-[0.18em] text-muted">{type}</p>
-          <p className="text-base font-semibold leading-tight break-words">{preview}</p>
+          
           {isLink ? (
             <a href={primaryHref} target="_blank" rel="noreferrer" className={linkClassName}>
-              {title}
+              {preview}
             </a>
           ) : (
-            <p className="text-sm text-muted line-clamp-2 break-words">{title}</p>
+            <p className="text-base font-semibold leading-tight break-words">{preview}</p>
           )}
           <div className="flex flex-wrap gap-2 mt-2">
             {tags.map((tag) => (
